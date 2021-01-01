@@ -43,45 +43,25 @@ void rotate (void){
 	}
 	
 	distance--;
-
 	
 	if(distance > 5){
-		disable_timer(0);
-		reset_timer(0);
+		NVIC_EnableIRQ(EINT2_IRQn);
 		NVIC_DisableIRQ(TIMER0_IRQn);
+		NVIC_EnableIRQ(TIMER1_IRQn);
+		disable_timer(0);
+
 		LED_On(3 - next_direction);
 	} else {
 		init_timer(0,time[distance]);
-		if (distance == 0)
+		if (distance == 0){
+			NVIC_DisableIRQ(EINT2_IRQn);
+			//init_timer(2,_5HZ_TIMER);
 			enable_timer(2);
+		} else {
+			NVIC_EnableIRQ(EINT2_IRQn);
+			NVIC_EnableIRQ(TIMER1_IRQn);
+		}
 	}
-
-/*	
-	switch(distance){
-		case 5:
-		case 4:
-		case 3:
-			init_timer(0,_2HZ_TIMER);
-			enable_timer(0);
-			break;
-		case 2:
-		case 1:
-			init_timer(0,_4HZ_TIMER);
-			enable_timer(0);
-			break;
-		case 0:
-			init_timer(0,_8HZ_TIMER);
-			enable_timer(0);
-			enable_timer(2);
-			break;
-		default:
-			disable_timer(0);
-			reset_timer(0);
-			NVIC_DisableIRQ(TIMER0_IRQn);
-			LED_On(3 - next_direction);
-			break;
-	}
-	*/
 }
 
 void run (void) {
@@ -101,17 +81,34 @@ void run (void) {
 				NVIC_DisableIRQ(TIMER1_IRQn);
 				disable_timer(1);
 				init_timer(0,_8HZ_TIMER);
+			//TODO init timer2
+			//init_timer(2,_5HZ_TIMER);
 				reset_timer(2);
 				enable_timer(0);
 				enable_timer(2);
 				break;
 			case 1:
 			case 2:
-				NVIC_EnableIRQ(TIMER0_IRQn);
-				reset_timer(0);
+				NVIC_EnableIRQ(EINT2_IRQn);
+				NVIC_EnableIRQ(TIMER1_IRQn);
+				init_timer(0,_4HZ_TIMER);
 				enable_timer(0);
 				break;
-			
+			case 3:
+			case 4:
+			case 5:
+				NVIC_EnableIRQ(EINT2_IRQn);
+				NVIC_EnableIRQ(TIMER1_IRQn);	
+				init_timer(0,_2HZ_TIMER);
+				enable_timer(0);
+				break;
+			default:
+				NVIC_EnableIRQ(EINT2_IRQn);
+				NVIC_EnableIRQ(TIMER1_IRQn);
+				disable_timer(0);
+				NVIC_DisableIRQ(TIMER0_IRQn);
+				LED_On(3 - next_direction);
+				break;
 		}
 		
 		if(distance == 0){
@@ -125,7 +122,6 @@ void run (void) {
 			LED_On(3 - next_direction);
 			disable_timer(0);
 			NVIC_DisableIRQ(TIMER0_IRQn);
-			reset_timer(0);
 		} else {
 			NVIC_EnableIRQ(TIMER0_IRQn);
 			reset_timer(0);

@@ -56,7 +56,6 @@ void RIT_IRQHandler (void)
 			if(down1==0){
 				reset_RIT();
 				disable_timer(2);
-				reset_timer(2);
 				disable_timer(1);
 				LED_Off(5);
 				LED_Off(3 - next_direction);	
@@ -88,13 +87,11 @@ void RIT_IRQHandler (void)
 			down2 = (down2>0 ? down2-1 : 0);	
 			if(down2==0){
 				disable_timer(1);
-				reset_timer(1);
 				NVIC_DisableIRQ(TIMER1_IRQn);
 
 				if(distance > 0){
 					LED_Off(5);
 					disable_timer(2);
-					reset_timer(2);
 				}
 				
 				reset_RIT();
