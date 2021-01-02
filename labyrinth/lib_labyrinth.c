@@ -56,7 +56,7 @@ void rotate (void){
 		enable_timer(0);
 		if (distance == 0){
 			NVIC_DisableIRQ(EINT2_IRQn);
-			//init_timer(2,_5HZ_TIMER);
+			init_timer(2,_5HZ_TIMER);
 			enable_timer(2);
 		} else {
 			NVIC_EnableIRQ(EINT2_IRQn);
@@ -123,7 +123,7 @@ void game_start(void) {
 	
 	// Timers initialization
 	init_timer(1,STEP_NCYCLES);							/* Initialization of TIMER1 (1 sec)		*/
-	init_timer(2,RLED_FREQUENCY);						/* Initialization of TIMER2 (10 Hz)		*/
+	init_timer(2,_5HZ_TIMER);						/* Initialization of TIMER2 (10 Hz)		*/
 	disable_timer(0);
 	disable_timer(1);
 	disable_timer(2);
@@ -140,12 +140,13 @@ void game_end (void){
 	// Disable all interrupts
 	NVIC_DisableIRQ(TIMER0_IRQn);
 	NVIC_DisableIRQ(TIMER1_IRQn);
+	NVIC_DisableIRQ(TIMER2_IRQn);
 	NVIC_DisableIRQ(EINT0_IRQn);
 	NVIC_DisableIRQ(EINT1_IRQn);
 	NVIC_DisableIRQ(EINT2_IRQn);
 	NVIC_DisableIRQ(RIT_IRQn);
 	
 	// All LEDs blink endlessly at 1 Hz
-	reset_timer(2);
-	enable_timer(2);	
+	init_timer(3,_1HZ_TIMER);
+	enable_timer(3);	
 }

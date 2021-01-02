@@ -12,9 +12,6 @@
 #include "../led/led.h"
 #include "../labyrinth/labyrinth.h"
 
-
-
-extern int game_started;
 extern unsigned int distance;
 extern unsigned int next_direction;
 
@@ -92,6 +89,28 @@ void TIMER2_IRQHandler (void) {
 	LPC_TIM2->IR = 1;			/* clear interrupt flag */
   return;
 }
+
+/******************************************************************************
+** Function name:		Timer2_IRQHandler
+**
+** Descriptions:		Timer/Counter 1 interrupt handler
+**
+** parameters:			None
+** Returned value:		None
+**
+******************************************************************************/
+void TIMER3_IRQHandler (void) {
+	run_cycles++;
+
+	if(run_cycles % 2 != 0)
+			LED_Out(0x2F);
+		else 
+			LED_Out(0x00);
+	
+	LPC_TIM3->IR = 1;			/* clear interrupt flag */
+  return;
+}
+
 
 /******************************************************************************
 **                            End Of File
