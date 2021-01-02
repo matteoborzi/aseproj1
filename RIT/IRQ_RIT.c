@@ -20,6 +20,7 @@ uint8_t active_buttons = 0x0;
 
 extern int game_started;
 extern unsigned int distance;
+extern unsigned int current_direction;
 extern unsigned int next_direction;
 
 /******************************************************************************

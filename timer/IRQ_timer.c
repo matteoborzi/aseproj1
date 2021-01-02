@@ -74,17 +74,10 @@ void TIMER1_IRQHandler (void) {
 void TIMER2_IRQHandler (void) {
 	run_cycles++;
 
-	if(game_started < 2){
-		if(run_cycles % 2 != 0)
-			LED_Off(5);
-		else
-			LED_On(5);
-	} else {
-		if(run_cycles % 2 != 0)
-			LED_Out(0x2F);
-		else 
-			LED_Out(0x00);
-	}
+	if(run_cycles % 2 != 0)
+		LED_Off(5);
+	else
+		LED_On(5);
 	
 	LPC_TIM2->IR = 1;			/* clear interrupt flag */
   return;
