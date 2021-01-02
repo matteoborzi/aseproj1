@@ -92,6 +92,8 @@ void RIT_IRQHandler (void)
 				if(distance > 0){
 					LED_Off(5);
 					disable_timer(2);
+				} else {
+					NVIC_EnableIRQ(EINT1_IRQn);
 				}
 				
 				reset_RIT();

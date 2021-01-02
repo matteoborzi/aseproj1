@@ -54,7 +54,6 @@ void TIMER1_IRQHandler (void) {
 	if( (LPC_GPIO2->FIOPIN & (1<<11)) == 0){		/*	if KEY2 is still pressed	*/
 		if(distance == 0){
 			disable_timer(1);
-			reset_timer(1);
 			NVIC_DisableIRQ(EINT2_IRQn);
 		} else {
 			//reset_timer(1);
@@ -77,22 +76,16 @@ void TIMER1_IRQHandler (void) {
 ******************************************************************************/
 void TIMER2_IRQHandler (void) {
 	run_cycles++;
-	
-	if (distance == 0){
-		if(run_cycles % 2 == 1){
-			LED_On(5);
-		} else if (run_cycles % 2 == 0) {
+
+	if(game_started < 2){
+		if(run_cycles % 2 != 0)
 			LED_Off(5);
-		}
-	} else if(game_started < 2){
-		if(run_cycles % 10 == 5)
+		else
 			LED_On(5);
-		else if(run_cycles % 10 == 0)
-			LED_Off(5);
 	} else {
-		if(run_cycles % 10 == 5)
+		if(run_cycles % 2 != 0)
 			LED_Out(0x2F);
-		else if(run_cycles % 10 == 0)
+		else 
 			LED_Out(0x00);
 	}
 	
