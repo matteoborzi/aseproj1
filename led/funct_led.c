@@ -20,8 +20,11 @@ extern unsigned char led_value;
   Function that turns on requested LED
  *----------------------------------------------------------------------------*/
 void LED_On(unsigned int num) {
- 
-  LPC_GPIO2->FIOPIN &= ~led_mask[num];
+	#if OPEN1768
+		LPC_GPIO2->FIOPIN &= ~led_mask[num];
+	#else
+		LPC_GPIO2->FIOPIN |= led_mask[num]; 
+	#endif
 	led_value = LPC_GPIO2->FIOPIN;
 }
 
@@ -29,8 +32,12 @@ void LED_On(unsigned int num) {
   Function that turns off requested LED
  *----------------------------------------------------------------------------*/
 void LED_Off(unsigned int num) {
+	#if OPEN1768
+		LPC_GPIO2->FIOPIN |= led_mask[num]; 	
+	#else
+		LPC_GPIO2->FIOPIN &= ~led_mask[num];
+	#endif
 
-  LPC_GPIO2->FIOPIN |= led_mask[num];
 	led_value = LPC_GPIO2->FIOPIN;
 }
 
