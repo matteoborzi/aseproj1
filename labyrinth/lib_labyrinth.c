@@ -45,24 +45,22 @@ void rotate (void){
 	distance--;
 
 	LED_On(3 - next_direction);
-	
+	NVIC_EnableIRQ(EINT2_IRQn);
+	NVIC_EnableIRQ(TIMER1_IRQn);	
+	init_timer(2,_1HZ_TIMER);
 	if(distance > 5){
-		NVIC_EnableIRQ(EINT2_IRQn);
-		NVIC_EnableIRQ(TIMER1_IRQn);
 		disable_timer(0);
-
+		reset_timer(0);
 	} else {
 		init_timer(0,time[distance]);
 		reset_timer(0);
 		enable_timer(0);
 		if (distance == 0){
 			NVIC_DisableIRQ(EINT2_IRQn);
+			NVIC_DisableIRQ(TIMER1_IRQn);
 			init_timer(2,_5HZ_TIMER);
 			reset_timer(2);
 			enable_timer(2);
-		} else {
-			NVIC_EnableIRQ(EINT2_IRQn);
-			NVIC_EnableIRQ(TIMER1_IRQn);
 		}
 	}
 }
@@ -82,14 +80,16 @@ void run (void) {
 		
 		if(distance > 5){
 			disable_timer(0);
+			reset_timer(0);
 		} else {
 			init_timer(0,time[distance]);
 			reset_timer(0);
 			enable_timer(0);
 			if (distance == 0){
-				//NVIC_DisableIRQ(TIMER1_IRQn);
-				//disable_timer(1);
-
+				NVIC_DisableIRQ(TIMER1_IRQn);
+				disable_timer(1);
+				reset_timer(1);
+				
 				NVIC_DisableIRQ(EINT1_IRQn);
 				init_timer(2,_5HZ_TIMER);
 				reset_timer(2);
@@ -127,7 +127,8 @@ void game_start(void) {
 	
 	// Timers initialization
 	init_timer(1,STEP_NCYCLES);							/* Initialization of TIMER1 (1 sec)		*/
-	init_timer(2,_1HZ_TIMER);						/* Initialization of TIMER2 (10 Hz)		*/
+	init_timer(2,_1HZ_TIMER);								/* Initialization of TIMER2 (10 Hz)		*/
+	init_timer(3,_1HZ_TIMER);
 	disable_timer(0);
 	disable_timer(1);
 	disable_timer(2);

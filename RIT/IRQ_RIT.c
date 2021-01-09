@@ -45,12 +45,6 @@ void RIT_IRQHandler (void)
 		if((value & (1<<11)) == 0){
 			down1 = (down1<2 ? down1+1 : 2);
 			reset_RIT();
-			switch(down1){
-				case 2:
-					break;
-				default:
-					break;
-			}
 		}
 		else {	/* button released */
 			down1 = (down1>0 ? down1-1 : 0);
@@ -58,6 +52,8 @@ void RIT_IRQHandler (void)
 				reset_RIT();
 				disable_timer(2);
 				disable_timer(1);
+				reset_timer(2);
+				reset_timer(1);
 				LED_Off(5);
 				LED_Off(3 - next_direction);	
 				rotate();
@@ -78,6 +74,7 @@ void RIT_IRQHandler (void)
 				case 1:
 					NVIC_EnableIRQ(TIMER1_IRQn);
 					enable_timer(1);
+					LED_On(5);
 					enable_timer(2);
 					break;
 				default:
@@ -88,11 +85,13 @@ void RIT_IRQHandler (void)
 			down2 = (down2>0 ? down2-1 : 0);	
 			if(down2==0){
 				disable_timer(1);
+				reset_timer(1);
 				NVIC_DisableIRQ(TIMER1_IRQn);
 
 				if(distance > 0){
 					LED_Off(5);
 					disable_timer(2);
+					reset_timer(2);
 				} else {
 					NVIC_EnableIRQ(EINT1_IRQn);
 				}
