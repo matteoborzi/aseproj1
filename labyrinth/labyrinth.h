@@ -5,8 +5,8 @@
 
 #define	LENGTH				13
 #define	WIDTH 				15
-#define	START_X				2
-#define	START_Y				2
+#define	START_X				7
+#define	START_Y				7
 
 // Timer cycles
 #define _8HZ_TIMER			0x17D784

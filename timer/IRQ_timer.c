@@ -28,9 +28,9 @@ void TIMER0_IRQHandler (void) {
 	count_cycles++;
 	
 	if( count_cycles % 2 != 0 ) {
-		LED_On(3 - next_direction);
+		LED_Off(3 - next_direction);
 	} else {
-		LED_Off(3 - next_direction);	
+		LED_On(3 - next_direction);	
 	}
 	
   LPC_TIM0->IR = 1;			/* clear interrupt flag */
@@ -53,7 +53,6 @@ void TIMER1_IRQHandler (void) {
 			disable_timer(1);
 			NVIC_DisableIRQ(EINT2_IRQn);
 		} else {
-			//reset_timer(1);
 			run();
 		}
 	}
