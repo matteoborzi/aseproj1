@@ -48,7 +48,7 @@ void TIMER0_IRQHandler (void) {
 **
 ******************************************************************************/
 void TIMER1_IRQHandler (void) {
-	if( (LPC_GPIO2->FIOPIN & (1<<11)) == 0){		/*	if KEY2 is still pressed	*/
+	if( (LPC_GPIO2->FIOPIN & (1<<12)) == 0){		/*	if KEY2 is still pressed	*/
 		if(distance == 0){
 			disable_timer(1);
 			NVIC_DisableIRQ(EINT2_IRQn);
